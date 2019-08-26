@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
-import { AccountsModuleConfig } from '..';
 
-export default ({ userAsInterface }: AccountsModuleConfig) => gql`
+export default gql`
   directive @auth on FIELD_DEFINITION | OBJECT
 
   type Tokens {
@@ -25,7 +24,7 @@ export default ({ userAsInterface }: AccountsModuleConfig) => gql`
     verified: Boolean
   }
 
-  ${userAsInterface ? 'interface' : 'type'} User {
+  type User {
     id: ID!
     emails: [EmailRecord!]
     username: String
@@ -50,5 +49,16 @@ export default ({ userAsInterface }: AccountsModuleConfig) => gql`
     user: UserInput
     # Two factor
     code: String
+  }
+
+  type Query {
+    getUser: User
+  }
+
+  type Mutation {
+    impersonate(accessToken: String!, username: String!): ImpersonateReturn
+    refreshTokens(accessToken: String!, refreshToken: String!): LoginResult
+    logout: Boolean
+    authenticate(serviceName: String!, params: AuthenticateParamsInput!): LoginResult
   }
 `;

@@ -1,11 +1,11 @@
-import { QueryResolvers } from '../../../models';
-import { ModuleContext } from '@graphql-modules/core';
-import { AccountsModuleContext } from '../../accounts';
 import { AccountsPassword } from '@accounts/password';
 
-export const Query: QueryResolvers<ModuleContext<AccountsModuleContext>> = {
+import { AccountsModuleContext } from '../../../context';
+import { QueryResolvers } from '../models';
+
+export const Query: QueryResolvers<AccountsModuleContext<AccountsPassword>> = {
   twoFactorSecret: async (_, args, ctx) => {
-    const { user, injector } = ctx;
+    const { user, service } = ctx;
 
     // Make sure user is logged in
     if (!(user && user.id)) {
@@ -13,7 +13,7 @@ export const Query: QueryResolvers<ModuleContext<AccountsModuleContext>> = {
     }
 
     // https://github.com/speakeasyjs/speakeasy/blob/master/index.js#L517
-    const secret = injector.get(AccountsPassword).twoFactor.getNewAuthSecret();
+    const secret = service.twoFactor.getNewAuthSecret();
     return secret;
   },
 };

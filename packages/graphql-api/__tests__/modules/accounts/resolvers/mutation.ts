@@ -27,9 +27,9 @@ describe('accounts resolvers mutation', () => {
     it('should call loginWithService', async () => {
       await Mutation.authenticate!(
         {},
-        { serviceName, params } as any,
-        { injector, ip, userAgent } as any,
-        {} as any
+        { serviceName, params },
+        { server: accountsServerMock, ip, userAgent },
+        {}
       );
       expect(injector.get).toBeCalledWith(AccountsServer);
       expect(accountsServerMock.loginWithService).toBeCalledWith(serviceName, params, {

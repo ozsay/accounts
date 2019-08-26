@@ -38,4 +38,19 @@ export default gql`
     email: String
     password: String
   }
+
+  type Query {
+    twoFactorSecret: TwoFactorSecretKey
+  }
+
+  type Mutation {
+    createUser(user: CreateUserInput!): ID
+    verifyEmail(token: String!): Boolean
+    resetPassword(token: String!, newPassword: String!): LoginResult
+    sendVerificationEmail(email: String!): Boolean
+    sendResetPasswordEmail(email: String!): Boolean
+    changePassword(oldPassword: String!, newPassword: String!): Boolean
+    twoFactorSet(secret: TwoFactorSecretKeyInput!, code: String!): Boolean
+    twoFactorUnset(code: String!): Boolean
+  }
 `;

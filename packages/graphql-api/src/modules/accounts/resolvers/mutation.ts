@@ -1,14 +1,12 @@
-import { MutationResolvers } from '../../../models';
-import { ModuleContext } from '@graphql-modules/core';
-import { AccountsModuleContext } from '..';
-import { AccountsServer } from '@accounts/server';
+import { AccountsContext } from '../../../context';
+import { MutationResolvers } from '../models';
 
-export const Mutation: MutationResolvers<ModuleContext<AccountsModuleContext>> = {
+export const Mutation: MutationResolvers<AccountsContext> = {
   authenticate: async (_, args, ctx) => {
     const { serviceName, params } = args;
-    const { ip, userAgent, injector } = ctx;
+    const { ip, userAgent, server } = ctx;
 
-    const authenticated = await injector.get(AccountsServer).loginWithService(serviceName, params, {
+    const authenticated = await server.loginWithService(serviceName, params, {
       ip,
       userAgent,
     });
@@ -16,11 +14,9 @@ export const Mutation: MutationResolvers<ModuleContext<AccountsModuleContext>> =
   },
   impersonate: async (_, args, ctx) => {
     const { accessToken, username } = args;
-    const { ip, userAgent, injector } = ctx;
+    const { ip, userAgent, server } = ctx;
 
-    const impersonateRes = await injector
-      .get(AccountsServer)
-      .impersonate(accessToken, { username }, ip, userAgent);
+    const impersonateRes = await server.impersonate(accessToken, { username }, ip, userAgent);
 
     // So ctx.user can be used in subsequent queries / mutations
     if (impersonateRes && impersonateRes.user && impersonateRes.tokens) {
@@ -31,21 +27,19 @@ export const Mutation: MutationResolvers<ModuleContext<AccountsModuleContext>> =
     return impersonateRes;
   },
   logout: async (_, __, context) => {
-    const { authToken, injector } = context;
+    const { token, server } = context;
 
-    if (authToken) {
-      await injector.get(AccountsServer).logout(authToken);
+    if (token) {
+      await server.logout(token);
     }
 
     return null;
   },
   refreshTokens: async (_, args, ctx) => {
     const { accessToken, refreshToken } = args;
-    const { ip, userAgent, injector } = ctx;
+    const { ip, userAgent, server } = ctx;
 
-    const refreshedSession = await injector
-      .get(AccountsServer)
-      .refreshTokens(accessToken, refreshToken, ip, userAgent);
+    const refreshedSession = await server.refreshTokens(accessToken, refreshToken, ip, userAgent);
 
     return refreshedSession;
   },

@@ -1,7 +1,6 @@
-import { QueryResolvers } from '../../../models';
-import { ModuleContext } from '@graphql-modules/core';
-import { AccountsModuleContext } from '..';
+import { AccountsContext } from '../../../context';
+import { QueryResolvers } from '../models';
 
-export const Query: QueryResolvers<ModuleContext<AccountsModuleContext>> = {
+export const Query: QueryResolvers<AccountsContext> = {
   getUser: (_, __, context) => context.user || null,
 };
