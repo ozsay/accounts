@@ -1,4 +1,4 @@
-import { AuthenticationService } from '@accounts/types';
+import { AuthenticationService, User } from '@accounts/types';
 import { AccountsServer } from '@accounts/server';
 
 import { RequestExtractor, SessionExtractionResult, AccountsContext } from './types';
@@ -14,14 +14,19 @@ export const context = <
 ) => async (session: Session): Promise<Context> => {
   const { token, ...sessionParams } = requestExtractor(session);
 
-  const user = token && (await accountsServer.resumeSession(token));
+  let user;
+  try {
+    user = token && (await accountsServer.resumeSession(token));
+  } catch (e) {
+    //
+  }
 
   return {
     token,
     server: accountsServer,
     service,
     user,
-    userId: user && user.id,
+    userId: user && (user as User).id,
     ...sessionParams,
   } as any;
 };

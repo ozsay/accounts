@@ -18,6 +18,7 @@ export interface SessionExtractionResult {
   token?: string;
 }
 
-export type RequestExtractor<Session extends object, Result extends SessionExtractionResult> = (
-  session: Session
-) => Result;
+export type RequestExtractor<
+  Session extends object,
+  Result extends SessionExtractionResult = SessionExtractionResult
+> = (session: Session) => Result;
