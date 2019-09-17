@@ -37,18 +37,7 @@ export default gql`
   }
 
   input AuthenticateParamsInput {
-    # Twitter, Instagram
-    access_token: String
-    # Twitter
-    access_token_secret: String
-    # OAuth
-    provider: String
-    # Password
-    password: String
-    # Password
-    user: UserInput
-    # Two factor
-    code: String
+    type: String
   }
 
   type Query {
@@ -60,5 +49,6 @@ export default gql`
     refreshTokens(accessToken: String!, refreshToken: String!): LoginResult
     logout: Boolean
     authenticate(serviceName: String!, params: AuthenticateParamsInput!): LoginResult
+    verifyAuthentication(serviceName: String!, params: AuthenticateParamsInput!): Boolean
   }
 `;

@@ -13,6 +13,8 @@ import {
 
 import { services } from './modules';
 
+export { RequestExtractor };
+
 export interface ServiceDefinition<Service extends AuthenticationService> {
   service: Service;
   typeDefs: DocumentNode;

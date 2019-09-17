@@ -13,12 +13,7 @@ export type Scalars = {
 };
 
 export type AuthenticateParamsInput = {
-  access_token?: Maybe<Scalars['String']>;
-  access_token_secret?: Maybe<Scalars['String']>;
-  provider?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-  user?: Maybe<UserInput>;
-  code?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 export type EmailRecord = {
@@ -46,6 +41,7 @@ export type Mutation = {
   refreshTokens?: Maybe<LoginResult>;
   logout?: Maybe<Scalars['Boolean']>;
   authenticate?: Maybe<LoginResult>;
+  verifyAuthentication?: Maybe<Scalars['Boolean']>;
 };
 
 export type MutationImpersonateArgs = {
@@ -59,6 +55,11 @@ export type MutationRefreshTokensArgs = {
 };
 
 export type MutationAuthenticateArgs = {
+  serviceName: Scalars['String'];
+  params: AuthenticateParamsInput;
+};
+
+export type MutationVerifyAuthenticationArgs = {
   serviceName: Scalars['String'];
   params: AuthenticateParamsInput;
 };
@@ -251,6 +252,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationAuthenticateArgs, 'serviceName' | 'params'>
+  >;
+  verifyAuthentication?: Resolver<
+    Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationVerifyAuthenticationArgs, 'serviceName' | 'params'>
   >;
 };
 

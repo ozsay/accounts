@@ -14,14 +14,12 @@ export const Mutation: MutationResolvers<AccountsContext> = {
   },
   verifyAuthentication: async (_, args, ctx) => {
     const { serviceName, params } = args;
-    const { ip, userAgent, injector } = ctx;
+    const { ip, userAgent, server } = ctx;
 
-    const authenticated = await injector
-      .get(AccountsServer)
-      .authenticateWithService(serviceName, params, {
-        ip,
-        userAgent,
-      });
+    const authenticated = await server.authenticateWithService(serviceName, params, {
+      ip,
+      userAgent,
+    });
     return authenticated;
   },
   impersonate: async (_, args, ctx) => {

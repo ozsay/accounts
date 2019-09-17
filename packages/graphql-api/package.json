@@ -1,6 +1,6 @@
 {
   "name": "@ozsay/accounts-graphql-api",
-  "version": "0.19.0",
+  "version": "0.20.0-alpha.1.cfb0004e",
   "description": "Server side GraphQL transport for accounts",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -60,7 +60,7 @@
     "@accounts/password": "^0.19.0",
     "@accounts/server": "^0.19.0",
     "@accounts/types": "^0.19.0",
-    "@graphql-modules/core": "0.7.9",
+    "@graphql-modules/core": "^0.7.9",
     "graphql-tag": "^2.10.0",
     "graphql-tools": "^4.0.5"
   },

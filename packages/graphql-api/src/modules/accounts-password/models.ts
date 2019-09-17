@@ -12,6 +12,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type AuthenticateParamsInput = {
+  username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+};
+
 export type CreateUserInput = {
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
@@ -195,6 +200,7 @@ export type ResolversTypes = {
   LoginResult: ResolverTypeWrapper<LoginResult>;
   Tokens: ResolverTypeWrapper<Tokens>;
   TwoFactorSecretKeyInput: TwoFactorSecretKeyInput;
+  AuthenticateParamsInput: AuthenticateParamsInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -209,6 +215,7 @@ export type ResolversParentTypes = {
   LoginResult: LoginResult;
   Tokens: Tokens;
   TwoFactorSecretKeyInput: TwoFactorSecretKeyInput;
+  AuthenticateParamsInput: AuthenticateParamsInput;
 };
 
 export type LoginResultResolvers<

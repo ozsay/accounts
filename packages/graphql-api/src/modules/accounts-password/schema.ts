@@ -1,6 +1,11 @@
 import gql from 'graphql-tag';
 
 export default gql`
+  input AuthenticateParamsInput {
+    username: String
+    password: String
+  }
+
   type Tokens {
     refreshToken: String
     accessToken: String
