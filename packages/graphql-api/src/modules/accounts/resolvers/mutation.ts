@@ -12,6 +12,18 @@ export const Mutation: MutationResolvers<AccountsContext> = {
     });
     return authenticated;
   },
+  verifyAuthentication: async (_, args, ctx) => {
+    const { serviceName, params } = args;
+    const { ip, userAgent, injector } = ctx;
+
+    const authenticated = await injector
+      .get(AccountsServer)
+      .authenticateWithService(serviceName, params, {
+        ip,
+        userAgent,
+      });
+    return authenticated;
+  },
   impersonate: async (_, args, ctx) => {
     const { accessToken, username } = args;
     const { ip, userAgent, server } = ctx;
