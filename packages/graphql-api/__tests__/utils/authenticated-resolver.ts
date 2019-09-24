@@ -6,7 +6,7 @@ describe('authenticated-resolver', () => {
     try {
       await authenticated(spy)({}, {}, { server: {} as any }, {});
     } catch (error) {
-      expect(spy).not.toBeCalled();
+      expect(spy).not.toHaveBeenCalled();
       expect(error.message).toBe('Unauthorized');
     }
 
