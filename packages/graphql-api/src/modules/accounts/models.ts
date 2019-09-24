@@ -13,7 +13,8 @@ export type Scalars = {
 };
 
 export type AuthenticateParamsInput = {
-  type?: Maybe<Scalars['String']>;
+  mfaToken?: Maybe<Scalars['String']>;
+  loginToken?: Maybe<Scalars['String']>;
 };
 
 export type EmailRecord = {

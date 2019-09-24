@@ -43,7 +43,8 @@ export default gql`
   }
 
   input AuthenticateParamsInput {
-    type: String
+    mfaToken: String
+    loginToken: String
   }
 
   type Query {
