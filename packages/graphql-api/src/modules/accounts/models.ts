@@ -35,13 +35,22 @@ export type LoginResult = {
   tokens?: Maybe<Tokens>;
 };
 
+export type LoginWithServiceResult = LoginResult | MfaLoginResult;
+
+export type MfaLoginResult = {
+  __typename?: 'MFALoginResult';
+  mfaToken?: Maybe<Scalars['String']>;
+  challenges?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   impersonate?: Maybe<ImpersonateReturn>;
   refreshTokens?: Maybe<LoginResult>;
   logout?: Maybe<Scalars['Boolean']>;
-  authenticate?: Maybe<LoginResult>;
+  authenticate?: Maybe<LoginWithServiceResult>;
   verifyAuthentication?: Maybe<Scalars['Boolean']>;
+  performMfaChallenge?: Maybe<Scalars['String']>;
 };
 
 export type MutationImpersonateArgs = {
@@ -61,6 +70,12 @@ export type MutationAuthenticateArgs = {
 
 export type MutationVerifyAuthenticationArgs = {
   serviceName: Scalars['String'];
+  params: AuthenticateParamsInput;
+};
+
+export type MutationPerformMfaChallengeArgs = {
+  challenge: Scalars['String'];
+  mfaToken: Scalars['String'];
   params: AuthenticateParamsInput;
 };
 
@@ -179,6 +194,8 @@ export type ResolversTypes = {
   Tokens: ResolverTypeWrapper<Tokens>;
   LoginResult: ResolverTypeWrapper<LoginResult>;
   AuthenticateParamsInput: AuthenticateParamsInput;
+  LoginWithServiceResult: ResolversTypes['LoginResult'] | ResolversTypes['MFALoginResult'];
+  MFALoginResult: ResolverTypeWrapper<MfaLoginResult>;
   UserInput: UserInput;
 };
 
@@ -195,6 +212,8 @@ export type ResolversParentTypes = {
   Tokens: Tokens;
   LoginResult: LoginResult;
   AuthenticateParamsInput: AuthenticateParamsInput;
+  LoginWithServiceResult: ResolversTypes['LoginResult'] | ResolversTypes['MFALoginResult'];
+  MFALoginResult: MfaLoginResult;
   UserInput: UserInput;
 };
 
@@ -230,6 +249,21 @@ export type LoginResultResolvers<
   tokens?: Resolver<Maybe<ResolversTypes['Tokens']>, ParentType, ContextType>;
 };
 
+export type LoginWithServiceResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LoginWithServiceResult'] = ResolversParentTypes['LoginWithServiceResult']
+> = {
+  __resolveType: TypeResolveFn<'LoginResult' | 'MFALoginResult', ParentType, ContextType>;
+};
+
+export type MfaLoginResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MFALoginResult'] = ResolversParentTypes['MFALoginResult']
+> = {
+  mfaToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  challenges?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+};
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
@@ -248,7 +282,7 @@ export type MutationResolvers<
   >;
   logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   authenticate?: Resolver<
-    Maybe<ResolversTypes['LoginResult']>,
+    Maybe<ResolversTypes['LoginWithServiceResult']>,
     ParentType,
     ContextType,
     RequireFields<MutationAuthenticateArgs, 'serviceName' | 'params'>
@@ -258,6 +292,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationVerifyAuthenticationArgs, 'serviceName' | 'params'>
+  >;
+  performMfaChallenge?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationPerformMfaChallengeArgs, 'challenge' | 'mfaToken' | 'params'>
   >;
 };
 
@@ -289,6 +329,8 @@ export type Resolvers<ContextType = any> = {
   EmailRecord?: EmailRecordResolvers<ContextType>;
   ImpersonateReturn?: ImpersonateReturnResolvers<ContextType>;
   LoginResult?: LoginResultResolvers<ContextType>;
+  LoginWithServiceResult?: LoginWithServiceResultResolvers;
+  MFALoginResult?: MfaLoginResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Tokens?: TokensResolvers<ContextType>;

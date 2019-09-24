@@ -1,4 +1,4 @@
-import { typeDefs, Mutation, Query } from './accounts';
+import { typeDefs, Mutation, Query, LoginResult, LoginWithServiceResult } from './accounts';
 import {
   typeDefs as passwordsTypeDefs,
   Mutation as PasswordsMutation,
@@ -11,6 +11,8 @@ export const services: { [key: string]: any } = {
   accounts: {
     typeDefs,
     resolvers: {
+      LoginResult,
+      LoginWithServiceResult,
       Mutation,
       Query,
     },

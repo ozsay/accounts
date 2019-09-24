@@ -13,6 +13,12 @@ export default gql`
     tokens: Tokens
   }
 
+  type MFALoginResult {
+    mfaToken: String
+    challenges: [String]
+  }
+  union LoginWithServiceResult = LoginResult | MFALoginResult
+
   type ImpersonateReturn {
     authorized: Boolean
     tokens: Tokens
@@ -48,7 +54,12 @@ export default gql`
     impersonate(accessToken: String!, username: String!): ImpersonateReturn
     refreshTokens(accessToken: String!, refreshToken: String!): LoginResult
     logout: Boolean
-    authenticate(serviceName: String!, params: AuthenticateParamsInput!): LoginResult
+    authenticate(serviceName: String!, params: AuthenticateParamsInput!): LoginWithServiceResult
     verifyAuthentication(serviceName: String!, params: AuthenticateParamsInput!): Boolean
+    performMfaChallenge(
+      challenge: String!
+      mfaToken: String!
+      params: AuthenticateParamsInput!
+    ): String
   }
 `;

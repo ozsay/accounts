@@ -12,6 +12,13 @@ export const Mutation: MutationResolvers<AccountsContext> = {
     });
     return authenticated;
   },
+  performMfaChallenge: async (_, args, ctx) => {
+    const { challenge, mfaToken, params } = args;
+    const { server } = ctx;
+
+    const loginToken = await server.performMfaChallenge(challenge, mfaToken, params);
+    return loginToken;
+  },
   verifyAuthentication: async (_, args, ctx) => {
     const { serviceName, params } = args;
     const { ip, userAgent, server } = ctx;
